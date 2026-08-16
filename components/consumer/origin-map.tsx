@@ -4,11 +4,13 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const pinIcon = L.divIcon({
-  html: '<div style="font-size:24px;line-height:1;transform:translate(-50%,-100%)">📍</div>',
-  className: "",
-  iconSize: [0, 0],
-});
+function getPinIcon() {
+  return L.divIcon({
+    html: '<div style="font-size:24px;line-height:1;transform:translate(-50%,-100%)">📍</div>',
+    className: "",
+    iconSize: [0, 0],
+  });
+}
 
 export function OriginMap({ lat, lng, label }: { lat: number; lng: number; label: string }) {
   return (
@@ -24,7 +26,7 @@ export function OriginMap({ lat, lng, label }: { lat: number; lng: number; label
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
         />
-        <Marker position={[lat, lng]} icon={pinIcon}>
+        <Marker position={[lat, lng]} icon={getPinIcon()}>
           <Popup>{label}</Popup>
         </Marker>
       </MapContainer>

@@ -1,22 +1,22 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { OriginMap } from "@/components/consumer/origin-map";
-import { formatDate, isValidBatchCode } from "@/lib/format";
+import { OriginMap } from "@/components/consumer/origin-map-loader";
+import { formatDate, isValidQrToken } from "@/lib/format";
 
 export async function generateMetadata(
-  props: PageProps<"/trace/[batchCode]">,
+  props: PageProps<"/trace/[qrToken]">,
 ): Promise<Metadata> {
-  const { batchCode } = await props.params;
-  return { title: `${batchCode} — AyurTrace Verification` };
+  const { qrToken } = await props.params;
+  return { title: `AyurTrace Verification (${qrToken})` };
 }
 
 const JOURNEY_STEPS = ["Collected", "Origin Verified", "Processed", "Lab Tested", "Manufactured"];
 
-export default async function ConsumerTracePage(props: PageProps<"/trace/[batchCode]">) {
-  const { batchCode } = await props.params;
+export default async function ConsumerTracePage(props: PageProps<"/trace/[qrToken]">) {
+  const { qrToken } = await props.params;
 
-  if (!isValidBatchCode(batchCode)) {
+  if (!isValidQrToken(qrToken)) {
     notFound();
   }
 
@@ -24,7 +24,7 @@ export default async function ConsumerTracePage(props: PageProps<"/trace/[batchC
   const { data: product } = await supabase
     .from("product_provenance")
     .select("*")
-    .eq("batch_code", batchCode)
+    .eq("qr_token", qrToken)
     .maybeSingle();
 
   if (!product) {
@@ -40,7 +40,7 @@ export default async function ConsumerTracePage(props: PageProps<"/trace/[batchC
         <h1 className="text-lg font-semibold text-neutral-900">{product.herb_name}</h1>
         <p className="text-sm font-medium text-emerald-700">✅ Verified Product</p>
         <p className="mt-2 text-xs text-neutral-500">
-          Batch: {product.batch_code} · Manufactured {formatDate(product.manufactured_at)}
+          Manufactured {formatDate(product.manufactured_at)}
         </p>
         <p className="text-xs text-neutral-500">Origin: {product.origin_location}</p>
       </div>

@@ -20,15 +20,25 @@ export default function LoginPage() {
     setError(null);
 
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    if (signInError) {
+    if (signInError || !signInData.user) {
       setError("Invalid email or password.");
       setLoading(false);
       return;
     }
 
-    router.push("/overview");
+    const { data: collector } = await supabase
+      .from("stakeholders")
+      .select("id")
+      .eq("auth_user_id", signInData.user.id)
+      .eq("role", "collector")
+      .maybeSingle();
+
+    router.push(collector ? "/submit" : "/overview");
     router.refresh();
   }
 

@@ -51,6 +51,8 @@ export async function POST(_request: Request, context: RouteContext<"/api/batche
   // Insert happens with the service-role client: the caller's session was
   // already verified above, and the products table has no authenticated
   // insert policy by design — writes here are gated by this route, not RLS.
+  const qrToken = generateQrToken();
+
   const service = createServiceClient();
   const { data: product, error } = await service
     .from("products")
@@ -58,8 +60,8 @@ export async function POST(_request: Request, context: RouteContext<"/api/batche
       batch_id: batch.id,
       product_name: `${batch.herb_name} Root Powder 250g`,
       manufactured_at: new Date().toISOString(),
-      qr_token: generateQrToken(),
-      qr_url: buildQrUrl(batch.batch_code),
+      qr_token: qrToken,
+      qr_url: buildQrUrl(qrToken),
       status: "active",
     })
     .select()

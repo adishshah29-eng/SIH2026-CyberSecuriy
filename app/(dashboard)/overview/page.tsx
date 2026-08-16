@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { KpiCard } from "@/components/dashboard/kpi-card";
+import { LedgerIntegrityBadge } from "@/components/dashboard/ledger-integrity-badge";
+import { RealtimeRefresher } from "@/components/dashboard/realtime-refresher";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatKg } from "@/lib/format";
 
@@ -40,6 +42,8 @@ export default async function OverviewPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <RealtimeRefresher tables={["batches", "collection_events", "anomalies"]} />
+
       <div>
         <h1 className="text-xl font-semibold text-neutral-900">Overview</h1>
         <p className="text-sm text-neutral-500">Ashwagandha supply chain — command center</p>
@@ -55,6 +59,8 @@ export default async function OverviewPage() {
           tone={riskAlerts > 0 ? "warning" : "default"}
         />
       </div>
+
+      <LedgerIntegrityBadge />
 
       <Card>
         <CardContent className="grid grid-cols-1 gap-6 py-5 sm:grid-cols-2 lg:grid-cols-4">

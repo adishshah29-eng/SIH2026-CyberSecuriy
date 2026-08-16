@@ -7,5 +7,16 @@ export default async function RootPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  redirect(user ? "/overview" : "/login");
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: collector } = await supabase
+    .from("stakeholders")
+    .select("id")
+    .eq("auth_user_id", user.id)
+    .eq("role", "collector")
+    .maybeSingle();
+
+  redirect(collector ? "/submit" : "/overview");
 }

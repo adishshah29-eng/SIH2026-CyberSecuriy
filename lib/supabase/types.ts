@@ -28,6 +28,7 @@ export interface Database {
           location: string | null;
           verified: boolean;
           created_at: string;
+          auth_user_id: string | null;
         };
         Insert: Partial<Database["public"]["Tables"]["stakeholders"]["Row"]> & {
           code: string;
@@ -253,10 +254,25 @@ export interface Database {
           },
         ];
       };
+      ledger_entries: {
+        Row: {
+          id: number;
+          entity_table: "collection_events" | "processing_events" | "quality_tests";
+          entity_id: string;
+          payload_hash: string;
+          prev_hash: string;
+          chain_hash: string;
+          created_at: string;
+        };
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
     };
     Views: {
       product_provenance: {
         Row: {
+          qr_token: string;
           batch_code: string;
           herb_name: string;
           origin_location: string;
@@ -278,6 +294,17 @@ export interface Database {
         Relationships: [];
       };
     };
-    Functions: Record<string, never>;
+    Functions: {
+      verify_ledger_chain: {
+        Args: Record<string, never>;
+        Returns: {
+          entry_id: number;
+          entity_table: string;
+          entity_id: string;
+          chain_ok: boolean;
+          payload_ok: boolean;
+        }[];
+      };
+    };
   };
 }

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnomalyCard, type AnomalyCardData } from "@/components/dashboard/anomaly-card";
+import { RealtimeRefresher } from "@/components/dashboard/realtime-refresher";
 import type { AnomalySeverity } from "@/lib/supabase/types";
 
 const SEVERITY_ORDER: AnomalySeverity[] = ["high", "medium", "low"];
@@ -34,6 +35,8 @@ export default async function AnomaliesPage() {
 
   return (
     <div className="flex flex-col gap-6">
+      <RealtimeRefresher tables={["anomalies"]} />
+
       <div>
         <h1 className="text-xl font-semibold text-neutral-900">🚨 AI Risk Monitoring</h1>
         <p className="text-sm text-neutral-500">

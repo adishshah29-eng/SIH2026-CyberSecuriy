@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { BatchStatusBadge } from "@/components/dashboard/status-badge";
+import { RealtimeRefresher } from "@/components/dashboard/realtime-refresher";
 import { formatDate, formatKg } from "@/lib/format";
 import type { BatchStage } from "@/lib/supabase/types";
 
@@ -36,6 +37,8 @@ export default async function BatchesPage(props: PageProps<"/batches">) {
 
   return (
     <div className="flex flex-col gap-6">
+      <RealtimeRefresher tables={["batches"]} />
+
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold text-neutral-900">Batch Management</h1>
