@@ -13,7 +13,7 @@ Next.js 16 (App Router, Turbopack) · TypeScript · Tailwind CSS v4 · Supabase 
 ## Getting started
 
 ```bash
-pnpm install
+npm install
 cp .env.local.example .env.local   # fill in your Supabase project values
 ```
 
@@ -28,7 +28,7 @@ psql "$SUPABASE_DB_URL" -f supabase/seed.sql
 Run the app:
 
 ```bash
-pnpm dev   # http://localhost:3000
+npm run dev   # http://localhost:3000
 ```
 
 ## Structure

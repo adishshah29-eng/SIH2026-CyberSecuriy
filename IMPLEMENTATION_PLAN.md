@@ -41,7 +41,7 @@ Collection → Validation → Processing → Lab Testing → Manufacturing → Q
 | QR | `qrcode` (server-side PNG generation) | Simple |
 | Map | `react-leaflet` + OpenStreetMap tiles | No API key needed |
 | Charts (optional) | `recharts` | Only for KPI trendlines |
-| Package manager | `pnpm` | |
+| Package manager | `npm` | |
 
 **Node** ≥ 20. **Deployment target:** Vercel (dashboard + consumer) + Supabase hosted project.
 
@@ -379,14 +379,14 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ## 14. Bootstrap (fresh clone → running app)
 
 ```bash
-pnpm install
+npm install
 cp .env.local.example .env.local     # fill in Supabase project values
 
 # apply schema + seed to your Supabase project
 supabase db push                      # or run supabase/migrations/0001_init.sql via SQL editor
 psql "$SUPABASE_DB_URL" -f supabase/seed.sql
 
-pnpm dev                              # http://localhost:3000
+npm run dev                           # http://localhost:3000
 ```
 
 ## 15. Implementation phases
@@ -394,7 +394,7 @@ pnpm dev                              # http://localhost:3000
 Each phase is a merge-ready increment. Ship in order.
 
 **Phase 0 — Repo + toolchain (day 1)**
-- `pnpm create next-app`, TS + App Router + Tailwind.
+- `npx create-next-app`, TS + App Router + Tailwind.
 - Install shadcn/ui, lucide-react, `@supabase/ssr`, `@supabase/supabase-js`, `qrcode`, `react-leaflet`, `leaflet`.
 - Commit `.env.local.example`, README.md, this plan.
 
