@@ -32,7 +32,7 @@ flowchart TB
         trigger["append_ledger_entry()<br/>SECURITY DEFINER trigger"]
     end
 
-    cron["Vercel Cron<br/>(every 15 min)"]
+    cron["Vercel Cron<br/>(daily — Hobby plan limit;<br/>Pro plan can run this more often)"]
 
     consumer -->|"GET /trace/qrt_..."| proxy
     collector -->|"login, GET/POST /submit"| proxy
@@ -283,7 +283,7 @@ gap.
 flowchart TB
     seed["supabase/seed.sql<br/>(8 hand-written demo anomalies)"]
     inline["Inline check in<br/>/api/collection-events<br/>(quantity vs. own history, at write time)"]
-    cron["/api/cron/score-anomalies<br/>(scheduled, every 15 min via Vercel Cron)"]
+    cron["/api/cron/score-anomalies<br/>(scheduled daily via Vercel Cron —<br/>Hobby plan allows at most once/day)"]
 
     subgraph cronDetail["Inside the cron job"]
         z["z-score check:<br/>per-collector mean/stddev of quantity_kg,<br/>flag latest event if |z| > 2"]

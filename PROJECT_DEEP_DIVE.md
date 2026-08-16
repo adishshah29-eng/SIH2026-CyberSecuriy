@@ -253,7 +253,8 @@ writing to the same `anomalies` table:
    (and they have ≥3 prior events), it immediately writes an `anomaly_type: quantity_spike` row.
    This is a cheap first-line check at write time, not a statistical model.
 3. **Scheduled scoring job** (`app/api/cron/score-anomalies/route.ts`) — the more rigorous pass,
-   intended to run on a schedule (Vercel Cron, see `vercel.json`, every 15 minutes):
+   intended to run on a schedule (Vercel Cron, see `vercel.json`, currently daily at midnight —
+   Vercel's free Hobby plan only allows once-per-day crons; bump the schedule if you're on Pro):
    - **`quantity_stat_outlier`**: for each collector with ≥3 events, computes the population mean
      and standard deviation of their quantities, and flags their *most recent* event if its
      z-score exceeds 2 (severity `high` above z=3).
